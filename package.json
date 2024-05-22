@@ -1,36 +1,23 @@
 {
   "name": "gengine",
-  "version": "1.0.0",
-  "description": "",
+  "version": "2.0.0",
+  "description": "A javascript game engine",
   "main": "index.js",
   "scripts": {
-    "start": "gulp",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "doxdox 'src/*.js' --layout bootstrap --output docs/index.html",
-    "lint": "jshint src/*.js"
+    "start": "npx webpack --config webpack.config.js",
+    "build": "webpack --config webpack.prod.js",
+    "lint": "npx tslint -c tslint.json 'src/*.ts'",
+    "test": "jasmine",
+    "testprod": "env NODE_ENV=production jasmine"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eugenioenko/gengine.git"
-  },
-  "keywords": [
-    "javascript",
-    "game",
-    "engine"
-  ],
-  "author": "",
+  "keywords": [],
+  "author": "eugenioenko",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/eugenioenko/gengine/issues"
-  },
-  "homepage": "https://github.com/eugenioenko/gengine#readme",
   "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-append-prepend": "^1.0.4",
-    "gulp-concat": "^2.6.1",
-    "gulp-connect": "^5.6.1",
-    "gulp-jshint": "^2.0.4",
-    "jshint": "^2.9.5",
-    "jshint-stylish": "^2.2.1"
+    "ts-loader": "^9.5.1",
+    "typedoc": "^0.25.13",
+    "typescript": "^5.4.5",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
   }
 }

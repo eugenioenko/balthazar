@@ -1,44 +1,39 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-	<title>test</title>
-	<style>
-		body,
-		html {
-			background-color: #333;
-		}
-
-		canvas {
-			background-color: #000;
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-			margin-top: 100px;
-		}
-
-		div.text {
-			text-align: center;
-			color: #fff;
-		}
-	</style>
-	<script>
-		window.GENGINE_DEBUG_MODE = true;
-	</script>
-	<script src="../../dist/gengine.js?v=1113"></script>
-	<script src="game.js?v=1113"></script>
-</head>
-
-<body>
-	<canvas id="canvas" oncontextmenu="return false"></canvas>
-	<div>
-		<label>Tile ID</label>
-		<input id="tile" value="1">
-	</div>
-	<div>
-		<textarea id="map"></textarea>
-	</div>
-	<button onclick="e.tilemap.save()">Save</button>
-</body>
-
+  <head>
+    <title>test</title>
+    <style>
+      body,
+      html {
+        background-color: #333;
+      }
+      canvas {
+        background-color: #000;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 100px;
+      }
+      div.text {
+        text-align: center;
+        color: #fff;
+      }
+    </style>
+    <script src="../../dist/gengine.js?v=11133"></script>
+    <script src="./tilemap.js?v=11131"></script>
+    <script src="./game.js?v=11131"></script>
+  </head>
+  <body>
+    <canvas id="canvas" oncontextmenu="return false"></canvas>
+    <div style="display: none">
+      <div>
+        <label>Tile ID</label>
+        <input id="tile" value="1" />
+      </div>
+      <div>
+        <textarea id="map"></textarea>
+      </div>
+      <button onclick="onSave()">Save</button>
+    </div>
+  </body>
 </html>
