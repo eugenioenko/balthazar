@@ -5,11 +5,11 @@ As final objective, create a visual environment for creating 2d games
 
 ### Work in progress
 
-> [minimalistic demo here](https://eugenioenko.github.io/gengine/demos/tilemap/)
+> [minimalistic demo here](https://eugenioenko.github.io/balthazar/demos/tilemap/)
 
 ### Documentation
 
-> [Gengine documentation here](https://eugenioenko.github.io/gengine/docs/)
+> [Gengine documentation here](https://eugenioenko.github.io/balthazar/docs/)
 
 ## Description
 
