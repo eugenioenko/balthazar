@@ -8,7 +8,8 @@
     "build": "webpack --config webpack.prod.js",
     "lint": "npx tslint -c tslint.json 'src/*.ts'",
     "test": "jasmine",
-    "testprod": "env NODE_ENV=production jasmine"
+    "testprod": "env NODE_ENV=production jasmine",
+    "docs": "typedoc src/index.ts --lightHighlightTheme monokai --darkHighlightTheme monokai"
   },
   "keywords": [],
   "author": "eugenioenko",

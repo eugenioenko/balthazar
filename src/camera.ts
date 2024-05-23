@@ -16,16 +16,6 @@ export interface CameraArgs {
    * y position of the camera
    */
   y: number;
-
-  /**
-   * width of the camera
-   */
-  width: number;
-
-  /**
-   * height of the camera
-   */
-  height: number;
 }
 
 export class Camera extends Component {
@@ -39,21 +29,11 @@ export class Camera extends Component {
    */
   y: number;
 
-  /**
-   * width of the camera
-   */
-  width: number;
-
-  /**
-   * height of the camera
-   */
-  height: number;
-
   constructor(engine: Engine, args: CameraArgs) {
     super(engine, args);
   }
   params() {
-    return ["x", "y", "width", "height"];
+    return ["x", "y"];
   }
 
   move(): void {}

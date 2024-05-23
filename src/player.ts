@@ -126,6 +126,22 @@ export class PlatformController extends Component {
     }
     return moveDistanceY;
   }
+
+  clampX(x: number): number {
+    return Maths.clamp(
+      x,
+      0,
+      this.tileMap.width * this.tileMap.twidth - this.engine.display.width
+    );
+  }
+
+  clampY(y: number): number {
+    return Maths.clamp(
+      y,
+      0,
+      this.tileMap.height * this.tileMap.theight - this.engine.display.height
+    );
+  }
 }
 
 export class Player extends Sprite {
@@ -201,13 +217,14 @@ export class Player extends Sprite {
     let inputX = this.input.getAxisHorizontal();
 
     // acceleration movement
-
     if (!this.jumping) {
       this.accelerationX = inputX * this.accelerationForceX;
     } else {
       this.accelerationX = (inputX * this.accelerationForceX) / 6;
     }
+
     this.velocityX += this.accelerationX * this.time.deltaTime;
+
     // friction
     let currentDir = Math.sign(this.velocityX);
     if (!this.jumping) {
@@ -219,6 +236,7 @@ export class Player extends Sprite {
     if (Math.sign(this.velocityX) !== currentDir) {
       this.velocityX = 0;
     }
+
     // limit speed
     let maxSpeedX = this.maxSpeedMultX;
     if (
@@ -235,10 +253,17 @@ export class Player extends Sprite {
     moveDistanceX = this.controller.checkForWalls(this, moveDistanceX);
     this.x += moveDistanceX;
     this.camera.x += moveDistanceX;
+    this.camera.x = this.controller.clampX(this.camera.x);
+    if (this.camera.x < 0) {
+      this.camera.x = 0;
+    }
+
     // gravity
     let moveDistanceY = this.controller.applyGravity(this);
     this.y += moveDistanceY;
     this.camera.y += moveDistanceY;
+    this.camera.y = this.controller.clampY(this.camera.y);
+
     // jump pressed and not jumping
     if (this.input.keyCode("ArrowUp") && !this.jumping) {
       this.jumping = true;
@@ -274,8 +299,8 @@ export class Player extends Sprite {
     this.sound = this.components.get(Sound);
     this.camera = this.components.get(Camera);
 
-    this.camera.x = Math.floor(this.x - this.camera.width / 2);
-    this.camera.y = Math.floor(this.y - this.camera.height / 2);
+    this.camera.x = Math.floor(this.x - this.display.width / 2);
+    this.camera.y = Math.floor(this.y - this.display.height / 2);
     this.controller = this.components.get(PlatformController);
   }
 

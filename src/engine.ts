@@ -60,8 +60,6 @@ export class Engine extends Component {
     this.camera = this.addComponent(Camera, {
       x: 0,
       y: 0,
-      width: this.width,
-      height: this.height,
     });
     this.time = this.addComponent(Time);
     this.sound = this.addComponent(Sound);
