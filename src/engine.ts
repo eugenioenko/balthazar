@@ -49,6 +49,7 @@ export class Engine extends Component {
   fpsDelayCount = 0;
   width: number;
   height: number;
+  logger: string[] = ["", ""];
 
   constructor(args: EngineArgs) {
     super(undefined, args);
@@ -161,6 +162,8 @@ export class Engine extends Component {
   };
 
   debugInfo() {
+    this.display.text(this.logger[0], 20, 30);
+    this.display.text(this.logger[1], 20, 50);
     if (!Debug.active()) return;
     this.display.text(this.time.time.toFixed(2), 20, 20);
     this.display.text(this.time.deltaTime.toFixed(4), 20, 40);

@@ -128,18 +128,14 @@ export class PlatformController extends Component {
   }
 
   clampX(x: number): number {
-    return Maths.clamp(
-      x,
-      0,
-      this.tileMap.width * this.tileMap.tileWidth - this.engine.display.width
-    );
+    return Maths.clamp(x, 0, this.tileMap.mapWidth - this.engine.display.width);
   }
 
   clampY(y: number): number {
     return Maths.clamp(
       y,
       0,
-      this.tileMap.height * this.tileMap.tileHeight - this.engine.display.height
+      this.tileMap.mapHeight - this.engine.display.height
     );
   }
 }
@@ -242,12 +238,23 @@ export class Player extends Sprite {
       maxSpeedX *= 2;
     }
 
+    // running
     this.velocityX = Maths.clamp(this.velocityX, -maxSpeedX, maxSpeedX);
     moveDistanceX += this.velocityX * this.time.deltaTime;
-
     moveDistanceX = this.controller.checkForWalls(this, moveDistanceX);
     this.x += moveDistanceX;
-    this.camera.x += moveDistanceX;
+
+    // camera adjustment
+    if (this.x > this.engine.display.width / 2) {
+      this.camera.x += moveDistanceX;
+    }
+
+    if (
+      moveDistanceX < 0 &&
+      this.x > this.engine.tileMap.mapWidth - this.engine.display.width / 2
+    ) {
+      this.camera.x -= moveDistanceX;
+    }
     this.camera.x = this.controller.clampX(this.camera.x);
 
     // gravity

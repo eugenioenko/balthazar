@@ -28,16 +28,59 @@ const SOLID_TILE = new Tile({
  * Class for managing tileMaps.
  */
 export class TileMap extends Sprite {
+  /**
+   * The matrix of the tile map
+   */
   matrix: Matrix;
+
+  /**
+   * The width of the map in pixels
+   */
   mapWidth: number;
+
+  /**
+   * The height of the map in pixels
+   */
   mapHeight: number;
+
+  /**
+   * The width of a tile in pixels
+   */
   tileWidth: number;
+
+  /**
+   * The height of a tile in pixels
+   */
   tileHeight: number;
+
+  /**
+   * The width of the map in tiles
+   */
   width: number;
+
+  /**
+   * The height of the map in tiles
+   */
   height: number;
+
+  /**
+   * The camera of the tile map
+   */
   camera: Camera;
+
+  /**
+   * The display of the tile map
+   */
   display: Display;
+
+  /**
+   * The tiles of the tile map
+   */
   tiles: Tile[];
+
+  /**
+   * The sprite sheet of the tile map
+   */
   sheet: SpriteSheet;
 
   constructor(engine: Engine, args: any) {
