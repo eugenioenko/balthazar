@@ -241,4 +241,9 @@ export class Display extends DisplayAbstract {
       );
     }
   }
+
+  debug(text: string): void {
+    this.ctx.fillStyle = "#F00";
+    this.ctx.fillText(text, 10, 10);
+  }
 }

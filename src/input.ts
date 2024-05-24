@@ -1,5 +1,6 @@
 import { Camera } from "./camera";
 import { Component } from "./components";
+import { Display } from "./display";
 import { Engine } from "./engine";
 
 /**
@@ -39,9 +40,17 @@ export class Input extends Component {
 
   init(): void {
     this.tileInput = document.getElementById("tile") as HTMLInputElement;
+    let canvas = this.components.get(Display).canvas;
+    canvas.addEventListener("mousemove", (event: any) => this.mouseMove(event));
+    canvas.addEventListener("mousedown", (event: any) => this.mouseDown(event));
+    canvas.addEventListener("mouseenter", () => this.mouseEnter());
+    canvas.addEventListener("mouseleave", () => this.mouseLeave());
+    canvas.addEventListener("click", (event: any) => this.mouseClick(event));
+    window.addEventListener("keydown", (event: any) => this.onKeyDown(event));
+    window.addEventListener("keyup", (event: any) => this.keyUp(event));
   }
 
-  mouseMove(event: PointerEvent) {
+  private mouseMove(event: PointerEvent) {
     let rect = this.engine.display.canvas.getBoundingClientRect();
     this.mouse.x = event.clientX - rect.left;
     this.mouse.y = event.clientY - rect.top;
@@ -56,15 +65,15 @@ export class Input extends Component {
     }
   }
 
-  mouseEnter() {
+  private mouseEnter() {
     this.mouse.isInside = true;
   }
 
-  mouseLeave() {
+  private mouseLeave() {
     this.mouse.isInside = false;
   }
 
-  mouseClick(event: PointerEvent) {
+  private mouseClick(event: PointerEvent) {
     if (event.metaKey) {
       let x = this.engine.tileMap.getTileX(this.mouse.x + this.camera.x);
       let y = this.engine.tileMap.getTileY(this.mouse.y + this.camera.y);
@@ -76,31 +85,29 @@ export class Input extends Component {
     }
   }
 
-  mouseDown(event: PointerEvent): void {}
+  private mouseDown(event: PointerEvent): void {}
 
-  keyDown(event: KeyboardEvent): void {
+  private onKeyDown(event: KeyboardEvent): void {
     this.keyCode_[event.code] = true;
   }
 
-  keyUp(event: KeyboardEvent): void {
+  private keyUp(event: KeyboardEvent): void {
     this.keyCode_[event.code] = false;
   }
 
-  keyCode(code: string): boolean {
-    return typeof this.keyCode_[code] !== "undefined"
-      ? this.keyCode_[code]
-      : false;
+  public keyDown(code: string): boolean {
+    return !!this.keyCode_[code];
   }
 
-  getAxisHorizontal() {
-    let result = this.keyCode("ArrowLeft") ? -1 : 0;
-    result += this.keyCode("ArrowRight") ? 1 : 0;
+  public getXAxis() {
+    let result = this.keyDown("ArrowLeft") ? -1 : 0;
+    result += this.keyDown("ArrowRight") ? 1 : 0;
     return result;
   }
 
-  getAxisVertical() {
-    let result = this.keyCode("ArrowUp") ? -1 : 0;
-    result += this.keyCode("ArrowDown") ? 1 : 0;
+  public getYAxis() {
+    let result = this.keyDown("ArrowUp") ? -1 : 0;
+    result += this.keyDown("ArrowDown") ? 1 : 0;
     return result;
   }
 }

@@ -14,7 +14,7 @@ export class Debug {
    * @returns If the debug mode is active
    */
   static active() {
-    return GENGINE_DEBUG_MODE;
+    return typeof GENGINE_DEBUG_MODE !== "undefined";
   }
 
   /**

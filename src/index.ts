@@ -6,7 +6,6 @@ import { Collider, ColliderArgs } from "./colliders";
 import { Component } from "./components";
 import { Display, DisplayArgs } from "./display";
 import { Engine, EngineArgs, EngineCreateArgs } from "./engine";
-import { Events } from "./events";
 import { Input } from "./input";
 import { Matrix } from "./matrix";
 import { PlatformController, PlatformControllerArgs, Player } from "./player";
@@ -47,7 +46,6 @@ export {
   Engine,
   EngineArgs,
   EngineCreateArgs,
-  Events,
   GameObject,
   Input,
   Matrix,

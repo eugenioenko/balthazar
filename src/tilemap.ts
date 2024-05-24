@@ -6,28 +6,33 @@ import { Maths } from "./maths";
 import { Matrix } from "./matrix";
 import { SpriteSheet } from "./sprite-sheets";
 import { Sprite } from "./sprites";
-import { Tile, TileCorners, TileEdges } from "./tile";
+import { Tile, TileCorners } from "./tile";
 
 export interface TileMapArgs {
   x: number;
   y: number;
   width: number;
   height: number;
-  twidth: number;
-  theight: number;
+  tileWidth: number;
+  tileHeight: number;
   sheet: string;
   tiles: string[];
 }
 
+const SOLID_TILE = new Tile({
+  solid: { top: true, bottom: true, right: true, left: true },
+  angle: 0,
+  sheet: 0,
+});
 /**
  * Class for managing tileMaps.
  */
 export class TileMap extends Sprite {
   matrix: Matrix;
-  mwidth: number;
-  mheight: number;
-  twidth: number;
-  theight: number;
+  mapWidth: number;
+  mapHeight: number;
+  tileWidth: number;
+  tileHeight: number;
   width: number;
   height: number;
   camera: Camera;
@@ -38,14 +43,23 @@ export class TileMap extends Sprite {
   constructor(engine: Engine, args: any) {
     super(engine, args);
     this.matrix = new Matrix(this.width, this.height);
-    this.mwidth = this.width * this.twidth;
-    this.mheight = this.height * this.theight;
+    this.mapWidth = this.width * this.tileWidth;
+    this.mapHeight = this.height * this.tileHeight;
     this.camera = this.components.get(Camera);
     this.display = this.components.get(Display);
   }
 
   params() {
-    return ["x", "y", "width", "height", "twidth", "theight", "sheet", "tiles"];
+    return [
+      "x",
+      "y",
+      "width",
+      "height",
+      "tileWidth",
+      "tileHeight",
+      "sheet",
+      "tiles",
+    ];
   }
 
   get(x: number, y: number): number {
@@ -82,21 +96,22 @@ export class TileMap extends Sprite {
   }
 
   getTileX(x: number): number {
-    return Math.floor((x / this.twidth) % this.mwidth);
+    return Math.floor((x / this.tileWidth) % this.mapWidth);
   }
 
   getTileY(y: number): number {
-    return Math.floor((y / this.theight) % this.mheight);
+    return Math.floor((y / this.tileWidth) % this.mapWidth);
   }
 
   getTile(x: number, y: number): Tile {
-    x = this.getTileX(x);
-    y = this.getTileY(y);
-    let tile = this.tiles[this.get(x, y)] || this.tiles[0];
-    tile.x = x;
-    tile.y = y;
-    tile.width = this.twidth;
-    tile.height = this.theight;
+    if (x < 0 || y < 0 || x >= this.mapWidth || y >= this.mapWidth) {
+      return SOLID_TILE;
+    }
+    const xTile = this.getTileX(x);
+    const yTile = this.getTileY(y);
+    const tileIndex = this.get(xTile, yTile);
+    const tile = this.tiles[tileIndex] || SOLID_TILE;
+
     return tile;
   }
 
@@ -112,8 +127,8 @@ export class TileMap extends Sprite {
   getDrawRect() {
     let x1 = this.getTileX(this.camera.x);
     let y1 = this.getTileY(this.camera.y);
-    let x2 = Math.ceil(this.display.width / this.twidth);
-    let y2 = Math.ceil(this.display.height / this.theight);
+    let x2 = Math.ceil(this.display.width / this.tileWidth);
+    let y2 = Math.ceil(this.display.height / this.tileWidth);
     x1 = Maths.clamp(x1, 0, this.width);
     y1 = Maths.clamp(y1, 0, this.height);
     x2 = Maths.clamp(x2 + x1 + 1, x1, this.width);
@@ -133,10 +148,10 @@ export class TileMap extends Sprite {
         let tile = this.get(i, j);
         if (tile) {
           this.display.drawTile(
-            this.x + i * this.twidth,
-            this.y + j * this.theight,
-            this.twidth,
-            this.theight,
+            this.x + i * this.tileWidth,
+            this.y + j * this.tileHeight,
+            this.tileWidth,
+            this.tileHeight,
             this.sheet,
             tile - 1
           );

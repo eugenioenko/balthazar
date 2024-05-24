@@ -3,7 +3,6 @@ import { Collection } from "./collection";
 import { Component } from "./components";
 import { Debug } from "./debug";
 import { Display } from "./display";
-import { Events } from "./events";
 import { Input } from "./input";
 import { ObjectConstructor } from "./objects";
 import { Registry } from "./registry";
@@ -47,7 +46,6 @@ export class Engine extends Component {
   camera: Camera;
   sound: Sound;
   input: Input;
-  events: Events;
   fpsDelayCount = 0;
   width: number;
   height: number;
@@ -71,7 +69,6 @@ export class Engine extends Component {
       height: this.height,
     });
     this.input = this.addComponent(Input);
-    this.events = this.addComponent(Events);
     Debug.groupEnd();
   }
 

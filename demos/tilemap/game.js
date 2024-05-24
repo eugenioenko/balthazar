@@ -1,7 +1,7 @@
 /**
  * Example of a game, this module is used for testing the engine.
  */
-var GENGINE_DEBUG_MODE = false;
+// var GENGINE_DEBUG_MODE = false;
 
 function onSave() {
   gengine.tileMap.save();
@@ -70,8 +70,8 @@ function Game(engine) {
     y: 0,
     width: 87,
     height: 56,
-    twidth: 32,
-    theight: 32,
+    tileWidth: 32,
+    tileHeight: 32,
     sheet: sheet,
     tiles: tiles,
   });

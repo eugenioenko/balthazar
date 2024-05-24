@@ -66,7 +66,7 @@ export class PlatformController extends Component {
 
   checkForWalls(sprite: Player, moveDistanceX: number): number {
     moveDistanceX = Math.floor(moveDistanceX);
-    let corners = this.getCorners(
+    const corners = this.getCorners(
       sprite.x + moveDistanceX,
       sprite.y,
       sprite.width,
@@ -131,7 +131,7 @@ export class PlatformController extends Component {
     return Maths.clamp(
       x,
       0,
-      this.tileMap.width * this.tileMap.twidth - this.engine.display.width
+      this.tileMap.width * this.tileMap.tileWidth - this.engine.display.width
     );
   }
 
@@ -139,7 +139,7 @@ export class PlatformController extends Component {
     return Maths.clamp(
       y,
       0,
-      this.tileMap.height * this.tileMap.theight - this.engine.display.height
+      this.tileMap.height * this.tileMap.tileHeight - this.engine.display.height
     );
   }
 }
@@ -173,7 +173,6 @@ export class Player extends Sprite {
   constructor(engine: Engine, args: any) {
     super(engine, args);
     this.color = "blue";
-    this.corners = {};
     this.vars = {};
     this.smoothTime = 1.3;
     this.vars.cv = 0;
@@ -214,7 +213,7 @@ export class Player extends Sprite {
 
     // left right movement
     let moveDistanceX = 0;
-    let inputX = this.input.getAxisHorizontal();
+    let inputX = this.input.getXAxis();
 
     // acceleration movement
     if (!this.jumping) {
@@ -239,24 +238,17 @@ export class Player extends Sprite {
 
     // limit speed
     let maxSpeedX = this.maxSpeedMultX;
-    if (
-      this.input.keyCode("KeyZ") &&
-      inputX &&
-      (this.corners.downLeft.solid.top || this.corners.downRight.solid.top)
-    ) {
+    if (this.input.keyDown("KeyZ") && inputX) {
       maxSpeedX *= 2;
     }
+
     this.velocityX = Maths.clamp(this.velocityX, -maxSpeedX, maxSpeedX);
     moveDistanceX += this.velocityX * this.time.deltaTime;
 
-    //moveDistanceX = inputX * 8 * this.time.deltaTime;
     moveDistanceX = this.controller.checkForWalls(this, moveDistanceX);
     this.x += moveDistanceX;
     this.camera.x += moveDistanceX;
     this.camera.x = this.controller.clampX(this.camera.x);
-    if (this.camera.x < 0) {
-      this.camera.x = 0;
-    }
 
     // gravity
     let moveDistanceY = this.controller.applyGravity(this);
@@ -265,22 +257,24 @@ export class Player extends Sprite {
     this.camera.y = this.controller.clampY(this.camera.y);
 
     // jump pressed and not jumping
-    if (this.input.keyCode("ArrowUp") && !this.jumping) {
+    if (this.input.keyDown("ArrowUp") && !this.jumping) {
       this.jumping = true;
       this.velocityY = -this.jumpForce / 2;
       this.jumpBooster = 0;
     }
+
     // jump being held while jumping
     if (
-      this.input.keyCode("ArrowUp") &&
+      this.input.keyDown("ArrowUp") &&
       this.jumping &&
       this.jumpBooster < 10
     ) {
       this.velocityY -= this.jumpForce / 12;
       this.jumpBooster += 1;
     }
+
     // jump released and jumping
-    if (!this.input.keyCode("ArrowUp") && this.jumping) {
+    if (!this.input.keyDown("ArrowUp") && this.jumping) {
       this.jumpBooster = 0;
       if (this.velocityY < -this.jumpForce / 2) {
         this.velocityY = -this.jumpForce / 2;

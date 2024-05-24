@@ -14,6 +14,13 @@ export interface TileEdges {
   right: Tile;
 }
 
+export interface TileSolid {
+  top: boolean;
+  bottom: boolean;
+  left: boolean;
+  right: boolean;
+}
+
 export interface TileArgs {
   /**
    * The angle of the tile.
@@ -28,7 +35,7 @@ export interface TileArgs {
   /**
    * The solid property of the tile walls.
    */
-  solid: TileEdges;
+  solid: TileSolid;
 }
 
 export class Tile extends GameObject {
